@@ -3,11 +3,6 @@ from flask import request
 from source.controller.authentication.token import jwt_Token
 from source.controller.controller import Controller, app
 
-from flask_cors import CORS
-
-app.config.from_object('config.DevelopmentConfig')
-CORS(app)
-
 controller = Controller()
 
 #for debugging only

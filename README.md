@@ -37,6 +37,10 @@ You have to install the [X5GON_content_metadata_dataset](https://github.com/IRCA
 (venv) cd X5GON_content_metadata_dataset
 (venv) pip install -e .
 ```
+## Env file secret 
+the URI of the database and jwt is a secret.
+Database url is in this format postgresql://username:password@host:port/database
+
 
 ## Run the api on the docker environment
 ```

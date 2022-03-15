@@ -1,10 +1,8 @@
 version: '3'
-
 services:
-  client:
+  api-gateway:
     build:
       context: .
-      dockerfile: ./Dockerfile
     environment: 
       FLASK_APP: api.py
     ports:

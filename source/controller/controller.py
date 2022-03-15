@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_cors import CORS
+
 
 from source.model.dbModel import db, User, SearchHistory, ClickHistory
 from source.model.searchModel import searchModel
@@ -9,11 +11,13 @@ from source.controller.authentication.password import EncPassword
 from source.controller.modifyFormat import modifyFilter
 
 import datetime
-import jwt
 import json
-
+import jwt
+import os
 
 app = Flask(__name__)
+app.config.from_object('config.ProductionConfig')
+CORS(app)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
