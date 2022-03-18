@@ -47,3 +47,16 @@ Database url is in this format postgresql://username:password@host:port/database
 (venv) docker-compose up
 ```
 * noted that the the docker compose in this api is for testing purpose only
+
+## Load the search engine
+First Install elasticsearch-7.17.1 in the source/bin/ folder.
+Then, start it with:
+```
+.\source\bin\elasticsearch-7.17.1\bin\elasticsearch
+```
+If running for the first time load the data into the search engine with:
+```
+cd source
+cd controller
+python elasticseach_utils.py
+```
