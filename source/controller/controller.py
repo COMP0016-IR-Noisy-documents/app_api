@@ -34,12 +34,12 @@ class Controller:
         filter = body.get('filter')
 
         searchFilter = modifyFilter(filter)
-
+        
         if title is None:
             title = ''
         
         try:      
-            result = self.__searchmodel.search(title)
+            result = self.__searchmodel.search(title, searchFilter)
             ''' 
             reformat from "{"id1": {obj1}, "id2": {obj2}}" to {"result": [{obj1}, {obj2}]}
             '''

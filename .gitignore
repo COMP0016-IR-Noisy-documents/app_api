@@ -9,3 +9,7 @@ venv2/
 
 #env file
 .env
+
+
+# elasticsearch files
+source/bin/elasticsearch-7.17.1/

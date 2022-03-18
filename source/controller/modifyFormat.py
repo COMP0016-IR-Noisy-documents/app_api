@@ -2,11 +2,24 @@
 
 from sqlalchemy import null
 
-#modify filter to match the format used in Elastic search
-def modifyFilter(filter):
-    Type = filter['Type']
-    Language = filter['Language']
+#modify filters to match the format used in Elastic search
+def modifyFilter(filters):
 
+    
+    Type = []
+    
+    Language = []
+
+    try:
+        Language = filters['language']
+    except KeyError:
+        pass
+
+    try:
+        Type = filters['lype']
+    except KeyError:
+        pass
+    
     # case either type or language list has 1 member
     if (len(Type) == 1):
         Type = Type[0]
@@ -16,34 +29,21 @@ def modifyFilter(filter):
 
         # case both type and language is empty list
     if (len(Type) == 0 and len(Language) == 0):
-        return null
+        return []
     else:
         # case either type and language is empty list
         if (len(Type) == 0):
-            filter = {
-                "bool":
-                {
-                    "must": {"term": {"Language": Language}}
-                }
-            }
+            filters = [{"terms": {"language": Language}}]
+            
         elif (len(Language) == 0):
-            filter = {
-                "bool": {
-                    "must": {"term": {"Type": Type}}
-                }
-            }
+            filters = [{"terms": {"type": Type}}]
+            
         #default case
         else:
-            filter = {
-                "bool": {
-                    "must": [
-                        {"term": {"Type": Type}},
-                        {"terms": {"Language": Language}}
-                    ]
-                }
-            }
-
-    return filter
+            filters = [{"terms": {"type": Type}}, {"terms": {"language": Language}}]
+            
+    print(filters)
+    return filters
 
 # test code
 if __name__ == "__main__":
