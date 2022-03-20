@@ -16,7 +16,7 @@ def modifyFilter(filters):
         pass
 
     try:
-        Type = filters['lype']
+        Type = filters['type']
     except KeyError:
         pass
     
