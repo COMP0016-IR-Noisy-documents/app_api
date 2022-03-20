@@ -7,7 +7,8 @@ from flask_cors import CORS
 from source.model.dbModel import db, User, SearchHistory, ClickHistory
 from source.model.searchModel import searchModel
 
-from source.controller.authentication.password import EncPassword
+from source.controller.security.password import EncPassword
+from source.controller.security.token import genJWT
 from source.controller.modifyFormat import modifyFilter
 
 import datetime
@@ -82,27 +83,30 @@ class Controller:
         Username = body.get('username')
         Password = body.get('password')
 
-        user = User.query.filter_by(Username=Username).first()
-        if user.Username == Username:
+        try:
+            user = User.query.filter_by(Username=Username).first()
+            if user.Username == Username:
                 salt = user.Salt
                 hashed_password = EncPassword(Password, salt)
                 if user.Password == hashed_password.getPassword():
-                    token = jwt.encode({'public_id' : user.PublicID, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=180)}, app.config['SECRET_KEY'], "HS256")
+                    token =  genJWT(user.PublicID)
                     user = User.query.filter_by(Username=Username).first()
 
                     return jsonify({'token' : token}), 200
-
-        return 'wrong user name or password', 401
+                return 'wrong password', 401
+        except:
+            return 'wrong username', 401
 
     #get user detail
     def userDetail(self):
         token = request.headers['x-access-token']
         data = jwt.decode(token, app.config['SECRET_KEY'], "HS256")
+        print(data)
         user = User.query.filter_by(PublicID = data['public_id']).first()
 
 
         user_json = jsonify({
-            'public_id': user.PublicID,
+            'public_id': data['public_id'],
             'username': user.Username,
             'email': user.Email,
             'displayname': user.DisplayName

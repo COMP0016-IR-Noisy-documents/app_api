@@ -4,32 +4,32 @@ from sqlalchemy import null
 
 #modify filter to match the format used in Elastic search
 def modifyFilter(filter):
-    Type = filter['Type']
-    Language = filter['Language']
+    type = filter['type']
+    language = filter['language']
 
     # case either type or language list has 1 member
-    if (len(Type) == 1):
-        Type = Type[0]
+    if (len(type) == 1):
+        type = type[0]
 
-    if (len(Language) == 1):
-        Language = Language[0]
+    if (len(language) == 1):
+        language = language[0]
 
         # case both type and language is empty list
-    if (len(Type) == 0 and len(Language) == 0):
+    if (len(type) == 0 and len(language) == 0):
         return null
     else:
         # case either type and language is empty list
-        if (len(Type) == 0):
+        if (len(type) == 0):
             filter = {
                 "bool":
                 {
-                    "must": {"term": {"Language": Language}}
+                    "must": {"term": {"language": language}}
                 }
             }
-        elif (len(Language) == 0):
+        elif (len(language) == 0):
             filter = {
                 "bool": {
-                    "must": {"term": {"Type": Type}}
+                    "must": {"term": {"type": type}}
                 }
             }
         #default case
@@ -37,17 +37,11 @@ def modifyFilter(filter):
             filter = {
                 "bool": {
                     "must": [
-                        {"term": {"Type": Type}},
-                        {"terms": {"Language": Language}}
+                        {"term": {"type": type}},
+                        {"terms": {"language": language}}
                     ]
                 }
             }
 
     return filter
 
-# test code
-if __name__ == "__main__":
-    print(modifyFilter({"Language": [], "Type": []}))
-    print(modifyFilter({"Language": ["sl"], "Type": []}))
-    print(modifyFilter({"Language": ["sl", "es"], "Type": ["pdf"]}))
-    print(modifyFilter({"Type":["docx","odt","rtf","txt","docx","odt","rtf","txt"],"Language":["sl","de","es"]}))

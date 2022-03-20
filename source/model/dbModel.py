@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import null
 
-from source.controller.authentication.password import EncPassword
+from source.controller.security.password import EncPassword
 
 import uuid
 from datetime import datetime, timezone
