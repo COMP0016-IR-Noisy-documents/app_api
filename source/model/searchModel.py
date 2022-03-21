@@ -7,7 +7,7 @@ import numpy
 import requests
 import json
 
-from source.controller.SimpleSearchEngine import SimpleSearchEngine
+from source.controller.ElasticSearchEngine import ElasticSearchEngine
 
 class searchModel():
     """
@@ -23,13 +23,13 @@ class searchModel():
 
     def __init__(self):
         # Initialise the search engine and the "x5gon database"
-        self.searchEngine = SimpleSearchEngine()
+        self.searchEngine = ElasticSearchEngine()
 
-
-    def search(self, query: str):
+    def search(self, query: str, filters: dict):
         # To search simply use the search() function of search engines.
         # Similar to interfaces in traditional OOP
-        search_results =  self.searchEngine.search(query).head(20)
+        
+        search_results =  self.searchEngine.search(query, filters)
 
         return self.add_metadata_to_search_results(search_results)
     
@@ -62,6 +62,7 @@ class searchModel():
                 print(f"cannot get document id: {id} from x5gon api" )
 
         search_results = search_results[search_results.url != ""]    
+        print("______")
         return search_results
 
 # test code
