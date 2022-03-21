@@ -21,13 +21,14 @@ def modifyFilter(filters):
         pass
     
     # case either type or language list has 1 member
-    if (len(Type) == 1):
-        Type = Type[0]
+    if (len(type) == 1):
+        type = type[0]
 
-    if (len(Language) == 1):
-        Language = Language[0]
+    if (len(language) == 1):
+        language = language[0]
 
         # case both type and language is empty list
+
     if (len(Type) == 0 and len(Language) == 0):
         return []
     else:
@@ -45,9 +46,3 @@ def modifyFilter(filters):
     print(filters)
     return filters
 
-# test code
-if __name__ == "__main__":
-    print(modifyFilter({"Language": [], "Type": []}))
-    print(modifyFilter({"Language": ["sl"], "Type": []}))
-    print(modifyFilter({"Language": ["sl", "es"], "Type": ["pdf"]}))
-    print(modifyFilter({"Type":["docx","odt","rtf","txt","docx","odt","rtf","txt"],"Language":["sl","de","es"]}))

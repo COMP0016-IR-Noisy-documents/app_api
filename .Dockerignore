@@ -1,9 +1,12 @@
 .git
 
 # Byte-compiled / optimized / DLL files 
-__pycache__/
+__pycache__
+.pytest_cache
 *.py[cod]
 *$py.class
 
 #virtual environment
-venv/
+venv
+
+.pytest_cache
