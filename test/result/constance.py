@@ -78,7 +78,7 @@ mock_user_detail_header_no_token = {
 
 mock_user_detail_header_invalid_token = {
     'Content-Type': 'application/json',
-    'x-access-token': eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiJmMzE1ODQ1ZS1iZjlkLTQ1MGYtOGIxZi04YmY0NDgzODVjZGIiLCJleHAiOjE2MDc4MDA0ODZ9.0RL4RffEa5Pi3L918nTPZuPdmJD_weqMioXGDQVnXVA
+    'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiJmMzE1ODQ1ZS1iZjlkLTQ1MGYtOGIxZi04YmY0NDgzODVjZGIiLCJleHAiOjE2MDc4MDA0ODZ9.0RL4RffEa5Pi3L918nTPZuPdmJD_weqMioXGDQVnXVA'
 }
 
 mock_user_detail_header_expire_token = {

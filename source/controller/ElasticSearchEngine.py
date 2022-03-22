@@ -3,6 +3,7 @@ import requests
 from elasticsearch import Elasticsearch
 import pandas as pd
 import json
+import os
 
 class ElasticSearchEngine(SearchEngine):
     
@@ -27,7 +28,11 @@ class ElasticSearchEngine(SearchEngine):
                          }
                     }       
         print(queryPaylod)
-        results = requests.get("http://localhost:9200/_search", json= queryPaylod)
+
+        session = requests.Session()
+        session.auth = ("elastic",os.getenv('ES_PASSWORD'))
+
+        results = session.get(os.getenv('ELASTICSEARCH_URI') + "/_search", json= queryPaylod)
         
         return self.getResultsAsDF(json.loads(results.text))
     
@@ -48,3 +53,6 @@ class ElasticSearchEngine(SearchEngine):
             resultDF[columnNames[i]] = [row[i] for row in results]
         print("---")
         return resultDF
+
+if __name__ == "__main__" :
+    pass

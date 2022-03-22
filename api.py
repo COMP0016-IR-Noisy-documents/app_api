@@ -47,5 +47,6 @@ def searchHistory():
 def clickHistory():
     return controller.clickHistory()
 
+
 if __name__ == '__main__':
     app.run()

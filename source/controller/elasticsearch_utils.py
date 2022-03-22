@@ -4,6 +4,7 @@ import csv
 import os
 
 
+
 class Algorithm():
     """A class defining a search algorithm implemented in ElasticSearch.
     """
@@ -35,8 +36,7 @@ class BM25(Algorithm):
 
 
 class LMDirichlet(Algorithm):
-        
-        
+               
     def __init__(self, mu: int):
         """The constructor of the class defining the LM Dirichlet algorithm in ElasticSearch
 
@@ -54,7 +54,7 @@ class LMDirichlet(Algorithm):
         return {"type":"LMDirichlet", "mu": self.mu}
 
 def deleteData():
-    requests.delete('https://localhost:9200/x5gon/')
+    requests.delete(ELASTICSEARCH_URI)
     
 #TODO https verification
 def createInstance(algorithm: Algorithm, stemming: bool):
@@ -64,11 +64,10 @@ def createInstance(algorithm: Algorithm, stemming: bool):
     if stemming == True: 
         query["mappings"]["properties"]["title"]["analyzer"] = "english"
 
-    resp = requests.put('http://localhost:9200/x5gon/', json=query)
+    resp = requests.put(ELASTICSEARCH_URI, json=query)
 
 def loadData(dataSet: str):
     
-
     with open(dataSet, encoding="utf8") as f:
         reader = csv.DictReader(f, delimiter="\t", )
         helpers.bulk(ES, reader, index='x5gon')
@@ -82,12 +81,19 @@ def setSearchEngine(algorithm: Algorithm, stemming: bool, dataSet: str):
 
 #########PARAMETERS############
 ALGORITHM = LMDirichlet(mu=1000)
-DATASET = "search-engine/api/X5GON_content_metadata_dataset/datasets/v1/x5gon_metadata.tsv"
+DATASET = "X5GON_content_metadata_dataset/datasets/v1/x5gon_metadata.tsv"
 STEMMING = True
-ELASTICSEARCH_URI = ""
-ES = Elasticsearch(host = "localhost", port = 9200)
+ELASTICSEARCH_URI = os.getenv('ELASTICSEARCH_URI')
+
+ES_PASSWORD = os.getenv('ES_PASSWORD')
+ES = Elasticsearch(
+    ELASTICSEARCH_URI,
+    basic_auth=("elastic",ES_PASSWORD)
+    )
 ###############################
 
+
 if __name__ == "__main__":
-    
+    print(ES.ping())
+
     setSearchEngine(ALGORITHM, STEMMING, DATASET)
