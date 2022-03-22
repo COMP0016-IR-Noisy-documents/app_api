@@ -54,7 +54,7 @@ class LMDirichlet(Algorithm):
         return {"type":"LMDirichlet", "mu": self.mu}
 
 def deleteData():
-    requests.delete('https://localhost:9200/x5gon/')
+    requests.delete('http://localhost:9200/x5gon/')
     
 #TODO https verification
 def createInstance(algorithm: Algorithm, stemming: bool):
@@ -70,24 +70,35 @@ def loadData(dataSet: str):
     
 
     with open(dataSet, encoding="utf8") as f:
-        reader = csv.DictReader(f, delimiter="\t", )
-        helpers.bulk(ES, reader, index='x5gon')
+        data= list(csv.DictReader(f, delimiter="\t", ))
+
+        
+        for row in data:
+            if row["concepts"] is not None and row["keywords"] is not None:
+                keywords = row["keywords"]
+                concepts = row["concepts"]
+                row["concepts"] = concepts.split("|||")
+                row["keywords"] = keywords.split("|||")
+
+        helpers.bulk(ES, data, index='x5gon')
 
 def setSearchEngine(algorithm: Algorithm, stemming: bool, dataSet: str):
     # Delete previous data
-    #deleteData()
+    deleteData()
+    print("Deleted previous data")
     createInstance(ALGORITHM, stemming)
+    print("Created search instance")
     loadData(dataSet)
+    print("Loaded data")
 
 
 #########PARAMETERS############
 ALGORITHM = LMDirichlet(mu=1000)
-DATASET = "search-engine/api/X5GON_content_metadata_dataset/datasets/v1/x5gon_metadata.tsv"
+DATASET = "../../X5GON_content_metadata_dataset/datasets/v1/x5gon_metadata.tsv"
 STEMMING = True
 ELASTICSEARCH_URI = ""
-ES = Elasticsearch(host = "localhost", port = 9200)
+ES = Elasticsearch("http://localhost:9200/")
 ###############################
 
 if __name__ == "__main__":
-    
     setSearchEngine(ALGORITHM, STEMMING, DATASET)

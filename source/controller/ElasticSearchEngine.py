@@ -8,8 +8,8 @@ class ElasticSearchEngine(SearchEngine):
     
     def search(self, query: str, filters: dict):
         
-        
-        queryPaylod ={
+        # The json of the query that will be sent to the ES instance
+        queryPaylod ={  "size": 50,
                         "query":{
                             "bool": {
                                 "filter":filters,
@@ -26,9 +26,9 @@ class ElasticSearchEngine(SearchEngine):
                             }
                          }
                     }       
-        print(queryPaylod)
+        # Get the results
         results = requests.get("http://localhost:9200/_search", json= queryPaylod)
-        
+        print(queryPaylod)
         return self.getResultsAsDF(json.loads(results.text))
     
     def getResultsAsDF(self,res):
@@ -36,6 +36,7 @@ class ElasticSearchEngine(SearchEngine):
         columnNames = ['id', 'title', 'type', 'language', 'keywords', 'concepts']
         results = []
         resultDF = pd.DataFrame()
+        # Parse the results json
         try:
             for hit in res['hits']['hits']:
                 hit = hit['_source']
@@ -44,9 +45,12 @@ class ElasticSearchEngine(SearchEngine):
                 results.append(row)
                 # Removed append as this method will be deprecated
         except KeyError:
+            # If there is a KeyError, then it means there are no results: return an empty DataFrame
             return resultDF
-            
+
+        #Add all of the columns to the DataFrame   
         for i in range(len(columnNames)):
+            
             resultDF[columnNames[i]] = [row[i] for row in results]
-        print("---")
+        print(len(resultDF.index))
         return resultDF

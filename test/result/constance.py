@@ -6,11 +6,11 @@ str_2 = 'def'
 str_3 = 'ghi'
 
 filter_lang_null_type_null = {"language": [], "type": []}
-filter_lang_null = {"language": [], "type": ["sl"]}
-filter_type_null = {"language": ["pdf"], "type": []}
-filter_lang_one_element = {"type":["sl","de","es"],"language":["docx"]}
-filter_type_one_element = {"language": [], "type": ["sl"]}
-filter_general = {"type":["sl","de","es"],"language":["docx","odt","rtf","txt","docx","odt","rtf","txt"]}
+filter_lang_null = {"type": [], "language": ["sl"]}
+filter_type_null = {"type": ["pdf"], "language": []}
+filter_lang_one_element = {"language":["sl","de","es"],"type":["docx"]}
+filter_type_one_element = {"ltype": [], "language": ["sl"]}
+filter_general = {"language":["sl","de","es"],"type":["docx","odt","rtf","txt","docx","odt","rtf","txt"]}
 
 mod_filter_type_null= [{"terms": {"language": ["pdf"]}}]
 

@@ -31,20 +31,22 @@ class Controller:
     #search for a related document
     def search(self):
         body = request.json    
+        # Get the parameters for the search
         title = body.get('query')
         filter = body.get('filter')
-
+        # Put the filters in the requireed format
         searchFilter = modifyFilter(filter)
         
         if title is None:
             title = ''
         
-        try:      
+        try:    
+            # Perform the search  
             result = self.__searchmodel.search(title, searchFilter)
             ''' 
             reformat from "{"id1": {obj1}, "id2": {obj2}}" to {"result": [{obj1}, {obj2}]}
             '''
-
+            # Put the results in JSON format
             resDict = result.to_dict(orient='index')
 
             resList = []

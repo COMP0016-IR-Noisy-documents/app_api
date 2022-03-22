@@ -46,23 +46,27 @@ class searchModel():
     
 
     def add_metadata_to_search_results(self, search_results: pandas.DataFrame) -> pandas.DataFrame:
-        # initialise new columns as empty
-        search_results["description"] = ""
-        search_results["url"] = ""
+
+        urls = []
+        descs = []
+        
         
         # for each result in the DataFrame, add the description and URL
-        for index, result in search_results.iterrows():
+
+        for index in search_results['id']:
+            metadata = self.get_metadata(index)
             try:
-                metadata = self.get_metadata(result["id"])
-                search_results.at[index, "description"] = metadata["description"]
-                search_results.at[index, "url"] = metadata["url"]
-            #remove the object that have the issue retrieving url and description
-            except:
-                id = result["id"]
-                print(f"cannot get document id: {id} from x5gon api" )
+                urls.append(metadata["url"])
+                descs.append(metadata["description"])
+            except KeyError:
+                print(f"cannot get document id: {index} from x5gon api" )
+        
+        # Add the new columns
+        search_results["description"] = descs
+        search_results["url"] = urls
 
         search_results = search_results[search_results.url != ""]    
-        print("______")
+        
         return search_results
 
 # test code

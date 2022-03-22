@@ -5,18 +5,19 @@ from sqlalchemy import null
 #modify filters to match the format used in Elastic search
 def modifyFilter(filters):
 
-    
+    print(filters)
+    modifiedFilters = None
     Type = []
     
     Language = []
-
+    # The dataset has inverted columns
     try:
-        Language = filters['language']
+        Type = filters['language']
     except KeyError:
         pass
 
     try:
-        Type = filters['type']
+        Language = filters['type']
     except KeyError:
         pass
     
@@ -27,15 +28,15 @@ def modifyFilter(filters):
     else:
         # case either type and language is empty list
         if (len(Type) == 0):
-            filters = [{"terms": {"language": Language}}]
+            modifiedFilters = [{"terms": {"language": Language}}]
             
         elif (len(Language) == 0):
-            filters = [{"terms": {"type": Type}}]
+            modifiedFilters = [{"terms": {"type": Type}}]
             
         #default case
         else:
-            filters = [{"terms": {"type": Type}}, {"terms": {"language": Language}}]
+            modifiedFilters = [{"terms": {"type": Type}}, {"terms": {"language": Language}}]
             
-    print(filters)
-    return filters
+    print(modifiedFilters)
+    return modifiedFilters
 
