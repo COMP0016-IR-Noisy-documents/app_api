@@ -20,13 +20,6 @@ def modifyFilter(filters):
     except KeyError:
         pass
     
-    # case either type or language list has 1 member
-    if (len(Type) == 1):
-        Type = Type[0]
-
-    if (len(Language) == 1):
-        Language = Language[0]
-
         # case both type and language is empty list
     if (len(Type) == 0 and len(Language) == 0):
         return []

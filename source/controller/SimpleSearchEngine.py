@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-
+from source.controller.SearchEngine import SearchEngine
 from x5gon_content_metadata_dataset.io import load_dataset
 
 K1 = 2
@@ -8,6 +8,9 @@ B = 0.75
 
 
 class SimpleSearchEngine():
+    """ 
+    A very basic search engine that uses the Okapi BM25 algorithm.
+    """
     # Simple search engine algorithm implementation using the BM25 search model
     # See https://en.wikipedia.org/wiki/Okapi_BM25 
 
@@ -43,11 +46,17 @@ class SimpleSearchEngine():
         nbOfDocs = len(documentList)
 
         return sumNbWords / nbOfDocs
-    def search(self, query: str):
+    def search(self, query: str, filters: list):
 
-        """
-        The search method takes a query string and return a dataframe corresponding to the search result
-        query: the query input to the search engine
+        """This method uses the search engine to search for a query with  certain filters.
+
+        Args:
+            query (str): The query string which will be searched
+            filters (list): The list of filters (in ElasticSearch format) which will be applied to the query
+
+        Returns:
+            A pd.DataFrame containin the search results
+        
         """
 
         # BM25 Score for the title and concept columns

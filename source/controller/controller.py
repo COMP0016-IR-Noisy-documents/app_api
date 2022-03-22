@@ -52,7 +52,7 @@ class Controller:
             resJSON = {"result": resList}
             return resJSON, 200
         except:
-            return "some error occur in the server", 500
+            return "some error has occured in the server", 500
 
     #register user to db
     def register(self):

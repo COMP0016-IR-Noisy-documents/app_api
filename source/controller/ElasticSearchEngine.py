@@ -36,13 +36,15 @@ class ElasticSearchEngine(SearchEngine):
         columnNames = ['id', 'title', 'type', 'language', 'keywords', 'concepts']
         results = []
         resultDF = pd.DataFrame()
+        try:
+            for hit in res['hits']['hits']:
+                hit = hit['_source']
+                row = [hit['id'], hit['title'], hit['type'], hit['language'], hit['keywords'], hit['concepts']]
 
-        for hit in res['hits']['hits']:
-            hit = hit['_source']
-            row = [hit['id'], hit['title'], hit['type'], hit['language'], hit['keywords'], hit['concepts']]
-
-            results.append(row)
-            # Removed append as this method will be deprecated
+                results.append(row)
+                # Removed append as this method will be deprecated
+        except KeyError:
+            return resultDF
             
         for i in range(len(columnNames)):
             resultDF[columnNames[i]] = [row[i] for row in results]
