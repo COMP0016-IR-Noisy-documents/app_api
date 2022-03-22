@@ -53,6 +53,7 @@ class Controller:
             for key in resDict.keys():
                 resList.append(resDict[key])
             resJSON = {"result": resList}
+            print("Formatted")
             return resJSON, 200
         except:
             return "some error has occured in the server", 500

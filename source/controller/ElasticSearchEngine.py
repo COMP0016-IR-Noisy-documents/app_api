@@ -52,5 +52,5 @@ class ElasticSearchEngine(SearchEngine):
         for i in range(len(columnNames)):
             
             resultDF[columnNames[i]] = [row[i] for row in results]
-        print(len(resultDF.index))
+        
         return resultDF
