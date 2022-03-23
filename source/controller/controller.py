@@ -34,16 +34,16 @@ class Controller:
         body = request.json    
         # Get the parameters for the search
         title = body.get('query')
-        filter = body.get('filter')
+        filters = body.get('filter')
         # Put the filters in the requireed format
-        searchFilter = modifyFilter(filter)
+        searchFilters = modifyFilter(filters)
         
         if title is None:
             title = ''
         
         try:    
             # Perform the search  
-            result = self.__searchmodel.search(title, searchFilter)
+            result = self.__searchmodel.search(title, searchFilters)
             ''' 
             reformat from "{"id1": {obj1}, "id2": {obj2}}" to {"result": [{obj1}, {obj2}]}
             '''
@@ -138,7 +138,7 @@ class Controller:
             user = User.query.filter_by(PublicID = PublicID).first()
             FK_UserID = user.UserID
         except:
-            print('user is not login/ cannot get user id')
+            print('user is not logged-in or cannot get user id')
             FK_UserID = None
  
         db.session.add(SearchHistory(Query, json.dumps(Filter), TopDocumentID, FK_UserID))
