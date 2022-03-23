@@ -24,41 +24,58 @@ class searchModel():
 
     def __init__(self):
         # Initialise the search engine and the "x5gon database"
+        # The search engine object can be any object which is a child of the SearchEngine class, and implements the search() method
         self.searchEngine = ElasticSearchEngine()
 
-    def search(self, query: str, filters: dict):
+    def search(self, query: str, filters: dict) -> pandas.DataFrame:
         # To search simply use the search() function of search engines.
         # Similar to interfaces in traditional OOP
         tic = time.perf_counter()
+
         search_results =  self.searchEngine.search(query, filters)
+
         toc = time.perf_counter()
         print(f"Searched results in {toc - tic:0.4f} seconds")
         
         return self.add_metadata_to_search_results(search_results)
     
-
-    # get additional metadata (description, etc.) from the X5GON API
-    # TODO make this safe: catch errors if the API call fails
-    def get_metadata(self, material_id: numpy.int64) -> dict:
-        # see https://www.askpython.com/python/examples/pull-data-from-an-api
-        response_API = requests.get("https://platform.x5gon.org/api/v1/oer_materials/" + str(material_id))
-        # print(response_API.status_code)
-        data = response_API.text
-        data_json = json.loads(data)
-        return data_json["oer_materials"]
     
-    def format_metadata(self, metadata: str):
+    def format_metadata(self, metadata: str) -> tuple:
+        """This method gets metadata from the X5GON API as Json and returns a tuple containing the description and the url
+            from the object.
+        Args:
+            metadata (str): The json object containing metadata from the X5GON API
+
+        Returns:
+            (str, str): Tuple object containing the description and the url
+        """
         try:
             data_json = json.loads(metadata)
-        except:
+        except json.JSONDecodeError:
+            print("Could not get metadata from a document")
             return ("", "")
+
         return (data_json["oer_materials"]["description"], data_json["oer_materials"]["url"])
     
-    def get_metadata_urls(self, search_results: pandas.DataFrame):
+    def get_metadata_urls(self, search_results: pandas.DataFrame) -> list:
+        """This method creates a list of url to send requests to (in the X5GON Dataset) to get all of the metadata.
+
+        Args:
+            search_results (pandas.DataFrame): All of the search results as a dataFrame
+
+        Returns:
+            list: the list of urls to send GET requests to
+        """
+
         urls = []
         for index in search_results["id"]:
             urls.append("https://platform.x5gon.org/api/v1/oer_materials/" + str(index))
         return urls
+    
+    def appendToResults(self, results: pandas.DataFrame, metadata: list):
+        results["description"] = [data[0] for data in metadata]
+        results["url"] = [data[1] for data in metadata]
+
 
     def add_metadata_to_search_results(self, search_results: pandas.DataFrame) -> pandas.DataFrame:
         """This function gets the metadata from the X5GON api and adds it to the search results. it uses parallelism to gain time
@@ -82,18 +99,14 @@ class searchModel():
                 metadata.append(self.format_metadata(future.result().content))
                 
         
-        # Add the new columns wit hthe metadata
-        search_results["description"] = [data[0] for data in metadata]
-        search_results["url"] = [data[1] for data in metadata]
-
+        # Add the new columns with the metadata
+        self.appendToResults(search_results, metadata)
+        # Only get results where we could retrieve metadata
         search_results = search_results[search_results.url != ""]    
 
+        # For testing purposes: time the step where we add metadata
         toc = time.perf_counter()
         print(f"Added metadata in {toc - tic:0.4f} seconds")
 
         return search_results
 
-# test code
-if __name__ == "__main__":
-    m = searchModel()
-    print(m.get_metadata(1)["url"])

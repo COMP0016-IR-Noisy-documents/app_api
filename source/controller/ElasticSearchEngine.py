@@ -9,7 +9,7 @@ class ElasticSearchEngine(SearchEngine):
     def search(self, query: str, filters: dict):
         
         # The json of the query that will be sent to the ES instance
-        queryPaylod ={  "size": 50,
+        queryPaylod ={  "size": 25,
                         "query":{
                             "bool": {
                                 "filter":filters,
