@@ -29,9 +29,10 @@ class searchModel():
     def search(self, query: str, filters: dict):
         # To search simply use the search() function of search engines.
         # Similar to interfaces in traditional OOP
-        
+        tic = time.perf_counter()
         search_results =  self.searchEngine.search(query, filters)
-        print("Search Done")
+        toc = time.perf_counter()
+        print(f"Searched results in {toc - tic:0.4f} seconds")
         
         return self.add_metadata_to_search_results(search_results)
     
@@ -53,7 +54,7 @@ class searchModel():
             return ("", "")
         return (data_json["oer_materials"]["description"], data_json["oer_materials"]["url"])
     
-    def get_metadata_urls(search_results: pd.DataFrame):
+    def get_metadata_urls(self, search_results: pandas.DataFrame):
         urls = []
         for index in search_results["id"]:
             urls.append("https://platform.x5gon.org/api/v1/oer_materials/" + str(index))
@@ -69,23 +70,27 @@ class searchModel():
             pandas.DataFrame: The search results with the metadata for each document
         """
         
-        print("started appending")
         
+        tic = time.perf_counter()
         # Run all of the get requests to add the metadata in parallel (for each document)
+        urls = self.get_metadata_urls(search_results)
         metadata = []
         with FuturesSession() as session:
-            futures = [session.get(url) for url in self.get_metadata_urls(search_results)]
-            print(len(futures))
+            futures = [session.get(url) for url in urls]
+            
             for future in futures:
                 metadata.append(self.format_metadata(future.result().content))
                 
-        print("finished appending")
+        
         # Add the new columns wit hthe metadata
         search_results["description"] = [data[0] for data in metadata]
         search_results["url"] = [data[1] for data in metadata]
 
         search_results = search_results[search_results.url != ""]    
-        print("Added metadata")
+
+        toc = time.perf_counter()
+        print(f"Added metadata in {toc - tic:0.4f} seconds")
+
         return search_results
 
 # test code
