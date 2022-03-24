@@ -27,7 +27,7 @@ Then install following dependencies on the requirements file by:
 ```
 You can check whether this is working:
 ```
-(venv) flask run
+(venv) flask run --reload
 ```
 To stop the flask server press Control-C.
 

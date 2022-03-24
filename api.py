@@ -1,14 +1,16 @@
 from flask import request
 
-from source.controller.authentication.token import jwt_Token
+from source.controller.security.token import jwt_Token
 from source.controller.controller import Controller, app
 
 controller = Controller()
 
+import os
+
+
 #for debugging only
 @app.route("/callback", methods=["GET"], strict_slashes=False)
 def callback():
-
     return request.args, 200 
 
 #search API 

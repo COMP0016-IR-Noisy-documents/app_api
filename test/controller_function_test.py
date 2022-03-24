@@ -1,7 +1,13 @@
 from sqlalchemy import null
+import os
+import jwt
+import datetime as dt
+from flask import jsonify
 import pytest
 
-from source.controller.authentication.password import EncPassword
+from source.controller.security.password import EncPassword
+from source.controller.security.token import genJWT, jwt_Token
+
 from source.controller.modifyFormat import modifyFilter
 
 
@@ -32,6 +38,14 @@ class TestAuthentication:
         password = EncPassword(const.str_1)
         another_password = EncPassword(const.str_1)
         assert password.getPassword() != another_password.getPassword()
+   
+    def test_token_enc_can_be_decrypt_by_our_key(self):
+        token = genJWT(const.str_1, const.str_2)
+        decoded = jwt.decode(token, const.str_2, "HS256")
+        assert decoded['public_id'] == const.str_1
+
+    
+
 
 
 class TestModifyFilter:
