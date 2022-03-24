@@ -54,6 +54,20 @@ search_req_no_filter = {
     "language": []
   }
 }
+# for register
+mock_user_register = {
+    "username": "Cat",
+    "password": "56789",
+    "email": "cat@cat.com",
+    "displayname": "CAT"
+}
+
+mock_user_register2 = {
+    "username": "Cats",
+    "password": "56789",
+    "email": "cat@cat.com",
+    "displayname": "CAT"
+}
 
 # for login route
 mock_user_data_correct = {
@@ -84,4 +98,25 @@ mock_user_detail_header_invalid_token = {
 mock_user_detail_header_expire_token = {
     'Content-Type': 'application/json',
     'x-access-token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJwdWJsaWNfaWQiOiJmMzE1ODQ1ZS1iZjlkLTQ1MGYtOGIxZi04YmY0NDgzODVjZGIiLCJleHAiOjE2MDc4MDA0ODZ9.AuWbw_Ko0OF9rPUy7yqv0eqZKdC0-F4eyB2b--WRG1Q'
+}
+
+#for collecting history
+mock_hist = {
+    'query': "keyboard",
+    'filter': {"language": [], "type": []},
+    'TopDocumentID': [1,2,3],
+    'public_id': '2683077d-cf36-450e-94e8-299454c91712'
+}
+
+mock_hist_no_public_id = {
+    'query': "keyboard",
+    'filter': {"language": [], "type": []},
+    'TopDocumentID': ["1","2","3"]
+}
+
+# for collecting click hist 
+mock_click_hist = {
+    "document_id": "29127",
+    "document_pos": "1",
+    "search_id": "132"
 }
