@@ -30,13 +30,8 @@ class searchModel():
     def search(self, query: str, filters: dict) -> pandas.DataFrame:
         # To search simply use the search() function of search engines.
         # Similar to interfaces in traditional OOP
-        tic = time.perf_counter()
-
         search_results =  self.searchEngine.search(query, filters)
 
-        toc = time.perf_counter()
-        print(f"Searched results in {toc - tic:0.4f} seconds")
-        
         return self.add_metadata_to_search_results(search_results)
     
     
@@ -87,8 +82,6 @@ class searchModel():
             pandas.DataFrame: The search results with the metadata for each document
         """
         
-        
-        tic = time.perf_counter()
         # Run all of the get requests to add the metadata in parallel (for each document)
         urls = self.get_metadata_urls(search_results)
         metadata = []
@@ -104,9 +97,6 @@ class searchModel():
         # Only get results where we could retrieve metadata
         search_results = search_results[search_results.url != ""]    
 
-        # For testing purposes: time the step where we add metadata
-        toc = time.perf_counter()
-        print(f"Added metadata in {toc - tic:0.4f} seconds")
-
+        
         return search_results
 
