@@ -1,13 +1,14 @@
-from source.controller.SearchEngine import SearchEngine
+from source.controller.search_engine.SearchEngine import SearchEngine
 import requests
 from elasticsearch import Elasticsearch
 import pandas as pd
 import json
+import os
 
 class ElasticSearchEngine(SearchEngine):
-    
+
     def search(self, query: str, filters: dict):
-        
+
         # The json of the query that will be sent to the ES instance
         queryPaylod ={  "size": 25,
                         "query":{
@@ -26,11 +27,15 @@ class ElasticSearchEngine(SearchEngine):
                             }
                          }
                     }       
-        # Get the results
-        results = requests.get("http://localhost:9200/_search", json= queryPaylod)
-        
+        print(queryPaylod)
+
+        session = requests.Session()
+        session.auth = ("elastic",os.getenv('ES_PASSWORD'))
+
+        results = session.get(os.getenv('ELASTICSEARCH_URI') + "/_search", json= queryPaylod)
+
         return self.getResultsAsDF(json.loads(results.text))
-    
+
     def getResultsAsDF(self,res):
 
         columnNames = ['id', 'title', 'type', 'language', 'keywords', 'concepts']
@@ -50,6 +55,7 @@ class ElasticSearchEngine(SearchEngine):
 
         #Add all of the columns to the DataFrame   
         for i in range(len(columnNames)):
+
             resultDF[columnNames[i]] = [row[i] for row in results]
-        
+
         return resultDF
