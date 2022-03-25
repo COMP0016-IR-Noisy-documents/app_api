@@ -19,7 +19,7 @@ import test.result.constance as const
 controller function unit test
 '''
 
-class TestAuthentication:
+class TestSecurity:
     
     def test_EncPassword_salt_is_generated(self):
         password = EncPassword(const.str_1)

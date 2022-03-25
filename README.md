@@ -2,6 +2,22 @@
 This microservice is the api of the project Information retrival from the noisy documents
 
 ## Setup
+### Dependency
+these are the main dependencies used in the project
+- elasticsearch 
+- flask 
+- flask_migrate
+- Flask-SQLAlchemy 
+- Flask-Cors
+- gunicorn
+- pandas 
+- pytest 
+- pyjwt
+- python-dotenv 
+- requests 
+- requests-futures
+
+
 ### Clone repository and initialise submodules
 This repository contains the X5GON_content_metadata_dataset repository as a [submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules). To automatically initialise the submodule, use the following command to clone this repository:
 ```
