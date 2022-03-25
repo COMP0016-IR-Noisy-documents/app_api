@@ -8,7 +8,7 @@ import requests
 import json
 import time
 from requests_futures.sessions import FuturesSession
-from source.controller.ElasticSearchEngine import ElasticSearchEngine
+from source.controller.search_engine.ElasticSearchEngine import ElasticSearchEngine
 
 class searchModel():
     """

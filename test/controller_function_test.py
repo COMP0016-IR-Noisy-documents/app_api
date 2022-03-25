@@ -6,20 +6,23 @@ from flask import jsonify
 import pytest
 import pandas as pd
 
-from source.controller.authentication.password import EncPassword
-from source.controller.authentication.token import genJWT, jwt_Token
+from source.controller.security.password import EncPassword
+from source.controller.security.token import genJWT, jwt_Token
 
 from source.controller.modifyFormat import modifyFilter
-from source.controller.ElasticSearchEngine import ElasticSearchEngine
+from source.controller.search_engine.ElasticSearchEngine import ElasticSearchEngine
 
 import test.result.constance as const
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 '''
 controller function unit test
 '''
 
-class TestAuthentication:
+class TestSecurity:
     
     def test_EncPassword_salt_is_generated(self):
         password = EncPassword(const.str_1)
@@ -45,9 +48,20 @@ class TestAuthentication:
         decoded = jwt.decode(token, const.str_2, "HS256")
         assert decoded['public_id'] == const.str_1
 
+
+# class TestModifyFilter:
     
+#     def test_modifyFilter_lang_and_type_null(self):
+#         modified = modifyFilter(const.filter_lang_null_type_null)
+#         assert modified == null
 
+#     def test_modifyFilter_lang_null(self):
+#         modified = modifyFilter(const.filter_lang_null)
+#         assert modified == const.mod_filter_lang_null
 
+#     def test_modifyFilter_type_null(self):
+#         modified = modifyFilter(const.filter_type_null)
+#         assert modified == const.mod_filter_type_null
 
 class TestModifilters:
     
@@ -55,18 +69,6 @@ class TestModifilters:
     def test_modifyFilter_lang_and_type_null(self):
         modified = modifyFilter(const.filter_lang_null_type_null)
         assert modified == []
-
-    def test_modifyFilter_lang_null(self):
-        modified = modifyFilter(const.filter_lang_null)
-        assert modified == const.mod_filter_lang_null
-
-    def test_modifyFilter_type_null(self):
-        modified = modifyFilter(const.filter_type_null)
-        assert modified == const.mod_filter_type_null
-
-    def test_modifyFilter_type_one_element(self):
-        modified = modifyFilter(const.filter_type_one_element)
-        assert modified == const.mod_filter_type_one_element
 
     def test_modifyFilter_lang_one_element(self):
         modified = modifyFilter(const.filter_lang_one_element)

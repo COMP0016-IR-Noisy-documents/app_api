@@ -40,25 +40,24 @@ class Controller:
         
         if title is None:
             title = ''
-        
+    
         try:    
             # Perform the search  
             result = self.__searchmodel.search(title, searchFilters)
+            print(result)
             ''' 
             reformat from "{"id1": {obj1}, "id2": {obj2}}" to {"result": [{obj1}, {obj2}]}
             '''
             tic = time.perf_counter()
             # Put the results in JSON format
             resDict = result.to_dict(orient='index')
-
             resList = []
             for key in resDict.keys():
                 resList.append(resDict[key])
             resJSON = {"result": resList}
-
             toc = time.perf_counter()
             print(f"Formatted in {toc - tic:0.4f} seconds")
-            
+        
             return resJSON, 200
         except:
             return "some error has occured in the server", 500

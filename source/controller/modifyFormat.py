@@ -1,5 +1,3 @@
-
-
 from sqlalchemy import null
 
 #modify filters to match the format used in Elastic search
@@ -12,17 +10,16 @@ def modifyFilter(filters):
     Language = []
     # The dataset has inverted columns
     try:
-        Type = filters['language']
+        Language = filters['language']
     except KeyError:
         pass
 
     try:
-        Language = filters['type']
+        Type = filters['type']
     except KeyError:
         pass
     
         # case both type and language is empty list
-
     if (len(Type) == 0 and len(Language) == 0):
         return []
     else:
@@ -40,3 +37,9 @@ def modifyFilter(filters):
     print(modifiedFilters)
     return modifiedFilters
 
+# test code
+if __name__ == "__main__":
+    print(modifyFilter({"Language": [], "Type": []}))
+    print(modifyFilter({"Language": ["sl"], "Type": []}))
+    print(modifyFilter({"Language": ["sl", "es"], "Type": ["pdf"]}))
+    print(modifyFilter({"Type":["docx","odt","rtf","txt","docx","odt","rtf","txt"],"Language":["sl","de","es"]}))
