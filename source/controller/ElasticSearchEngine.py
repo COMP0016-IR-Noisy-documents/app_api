@@ -28,7 +28,7 @@ class ElasticSearchEngine(SearchEngine):
                     }       
         # Get the results
         results = requests.get("http://localhost:9200/_search", json= queryPaylod)
-        print(queryPaylod)
+        
         return self.getResultsAsDF(json.loads(results.text))
     
     def getResultsAsDF(self,res):
@@ -50,7 +50,6 @@ class ElasticSearchEngine(SearchEngine):
 
         #Add all of the columns to the DataFrame   
         for i in range(len(columnNames)):
-            
             resultDF[columnNames[i]] = [row[i] for row in results]
         
         return resultDF
