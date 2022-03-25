@@ -6,8 +6,8 @@ from flask import jsonify
 import pytest
 import pandas as pd
 
-from source.controller.authentication.password import EncPassword
-from source.controller.authentication.token import genJWT, jwt_Token
+from source.controller.security.password import EncPassword
+from source.controller.security.token import genJWT, jwt_Token
 
 from source.controller.modifyFormat import modifyFilter
 from source.controller.ElasticSearchEngine import ElasticSearchEngine
