@@ -15,6 +15,7 @@ import datetime
 import json
 import jwt
 import os
+import time
 
 app = Flask(__name__)
 app.config.from_object('config.ProductionConfig')
@@ -31,29 +32,36 @@ class Controller:
     #search for a related document
     def search(self):
         body = request.json    
+        # Get the parameters for the search
         title = body.get('query')
-        filter = body.get('filter')
-
-        searchFilter = modifyFilter(filter)
-
+        filters = body.get('filter')
+        # Put the filters in the requireed format
+        searchFilters = modifyFilter(filters)
+        
         if title is None:
             title = ''
         
-        try:      
-            result = self.__searchmodel.search(title)
+        try:    
+            # Perform the search  
+            result = self.__searchmodel.search(title, searchFilters)
             ''' 
             reformat from "{"id1": {obj1}, "id2": {obj2}}" to {"result": [{obj1}, {obj2}]}
             '''
-
+            tic = time.perf_counter()
+            # Put the results in JSON format
             resDict = result.to_dict(orient='index')
 
             resList = []
             for key in resDict.keys():
                 resList.append(resDict[key])
             resJSON = {"result": resList}
+
+            toc = time.perf_counter()
+            print(f"Formatted in {toc - tic:0.4f} seconds")
+            
             return resJSON, 200
         except:
-            return "some error occur in the server", 500
+            return "some error has occured in the server", 500
 
     #register user to db
     def register(self):
@@ -130,7 +138,7 @@ class Controller:
             user = User.query.filter_by(PublicID = PublicID).first()
             FK_UserID = user.UserID
         except:
-            print('user is not login/ cannot get user id')
+            print('user is not logged-in or cannot get user id')
             FK_UserID = None
  
         db.session.add(SearchHistory(Query, json.dumps(Filter), TopDocumentID, FK_UserID))

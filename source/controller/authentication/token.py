@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from functools import wraps
 from source.model.dbModel import User
-
+import datetime as dt
 import os
 import jwt
 
@@ -27,3 +27,9 @@ def jwt_Token(f):
         return  f(current_user, *args, **kwargs)
   
     return decorated
+
+
+# generated token containing user data like 
+def genJWT(public_id, secret_key = os.getenv('JWT_SECRET_KEY')):    
+    token = jwt.encode({'public_id' : public_id, 'exp' : dt.datetime.utcnow() + dt.timedelta(minutes=180)}, secret_key, "HS256")
+    return token

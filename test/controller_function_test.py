@@ -4,12 +4,13 @@ import jwt
 import datetime as dt
 from flask import jsonify
 import pytest
+import pandas as pd
 
 from source.controller.security.password import EncPassword
 from source.controller.security.token import genJWT, jwt_Token
 
 from source.controller.modifyFormat import modifyFilter
-
+from source.controller.ElasticSearchEngine import ElasticSearchEngine
 
 import test.result.constance as const
 
@@ -48,11 +49,12 @@ class TestAuthentication:
 
 
 
-class TestModifyFilter:
+class TestModifilters:
+    
     
     def test_modifyFilter_lang_and_type_null(self):
         modified = modifyFilter(const.filter_lang_null_type_null)
-        assert modified == null
+        assert modified == []
 
     def test_modifyFilter_lang_null(self):
         modified = modifyFilter(const.filter_lang_null)
@@ -75,8 +77,27 @@ class TestModifyFilter:
         assert modified == const.mod_filter_general
 
     
+se = ElasticSearchEngine()
+class TestElasticsearch:
+    
 
- 
+    def test_search_normal(self):
+        assert se.search("french", []).empty != True
+
+    def test_search_noresult(self):
+        assert se.search("azertyuiopqsdfghjkkklm", const.mod_filter_type_one_element).empty
+
+    def test_search_one_filter(self):
+        assert se.search("french", const.mod_filter_type_null).empty != True
+    
+    def test_search_two_filters(self):
+        assert se.search("french", const.search_filter_one).empty != True
+
+    def test_search_one_multi_filter(self):
+        assert se.search("french", const.search_filter_two).empty != True
+
+    def test_search_two_multi_filters(self):
+        assert se.search("french", const.search_filter_three).empty != True
 
         
 
