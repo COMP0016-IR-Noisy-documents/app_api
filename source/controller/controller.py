@@ -17,6 +17,8 @@ import jwt
 import os
 import time
 
+# By Tim Widmayer, Vincent Lefeuve, Tchatchawin Leelawat
+
 app = Flask(__name__)
 app.config.from_object('config.ProductionConfig')
 CORS(app)
@@ -32,6 +34,7 @@ class Controller:
     #search for a related document
     def search(self):
         body = request.json    
+        #TODO: do that in the api endpoint
         # Get the parameters for the search
         title = body.get('query')
         filters = body.get('filter')

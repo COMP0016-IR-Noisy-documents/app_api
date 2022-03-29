@@ -6,6 +6,8 @@ import test.result.constance as const
 import requests
 from dotenv import load_dotenv
 
+# By Vincent Lefeuve
+
 load_dotenv()
 
 '''

@@ -1,7 +1,7 @@
 """
 The search algorithm (currently only returns the id column, unranked)
 """
-
+# By Tim Widmayer, Vincent Lefeuve, Tchatchawin Leelawat
 import pandas
 import numpy
 import requests
@@ -30,8 +30,9 @@ class searchModel():
     def search(self, query: str, filters: dict) -> pandas.DataFrame:
         # To search simply use the search() function of search engines.
         # Similar to interfaces in traditional OOP
+        
         search_results =  self.searchEngine.search(query, filters)
-
+        
         return self.add_metadata_to_search_results(search_results)
     
     

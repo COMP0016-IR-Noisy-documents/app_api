@@ -1,4 +1,4 @@
-
+# By Vincent Lefeuve
 class SearchEngine():
     """The class defining the search engine objects that can be plugged-in the project. These objects should be children of this class."""
     def __init__(self):

@@ -3,7 +3,7 @@ from elasticsearch import Elasticsearch, helpers
 import csv
 import os
 
-
+# By Vincent Lefeuve
 
 class Algorithm():
     """A class defining a search algorithm implemented in ElasticSearch.

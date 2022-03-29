@@ -1,5 +1,7 @@
 from sqlalchemy import null
 
+# By Vincent Lefeuve, Tchatchawin Leelawat
+
 #modify filters to match the format used in Elastic search
 def modifyFilter(filters):
 

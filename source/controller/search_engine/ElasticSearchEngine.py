@@ -5,6 +5,8 @@ import pandas as pd
 import json
 import os
 
+# By Vincent Lefeuve
+
 class ElasticSearchEngine(SearchEngine):
 
     def search(self, query: str, filters: dict):
@@ -27,8 +29,8 @@ class ElasticSearchEngine(SearchEngine):
                             }
                          }
                     }       
-        print(queryPaylod)
-
+        
+        
         session = requests.Session()
         session.auth = ("elastic",os.getenv('ES_PASSWORD'))
 
@@ -57,5 +59,5 @@ class ElasticSearchEngine(SearchEngine):
         for i in range(len(columnNames)):
 
             resultDF[columnNames[i]] = [row[i] for row in results]
-
+        
         return resultDF
