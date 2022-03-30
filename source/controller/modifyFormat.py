@@ -1,6 +1,6 @@
 from sqlalchemy import null
 
-# By Vincent Lefeuve, Tchatchawin Leelawat
+# By Vincent Lefeuve, Thatchawin Leelawat
 
 #modify filters to match the format used in Elastic search
 def modifyFilter(filters):

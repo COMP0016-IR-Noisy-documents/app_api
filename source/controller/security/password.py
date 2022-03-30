@@ -1,6 +1,7 @@
 import os
 import hashlib
 
+# By Thatchawin Leelawat
 # code for encrypting userpassword and generated salt
 class EncPassword():
     def __init__(self, password: str, salt: str=None):

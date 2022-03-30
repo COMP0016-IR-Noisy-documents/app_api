@@ -7,7 +7,7 @@ controller = Controller()
 
 import os
 
-# By Tim Widmayer, Vincent Lefeuve, Tchatchawin Leelawat
+# By Tim Widmayer, Vincent Lefeuve, Thatchawin Leelawat
 
 #for debugging only
 @app.route("/callback", methods=["GET"], strict_slashes=False)

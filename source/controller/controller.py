@@ -17,7 +17,7 @@ import jwt
 import os
 import time
 
-# By Tim Widmayer, Vincent Lefeuve, Tchatchawin Leelawat
+# By Tim Widmayer, Vincent Lefeuve, Thatchawin Leelawat
 
 app = Flask(__name__)
 app.config.from_object('config.ProductionConfig')
